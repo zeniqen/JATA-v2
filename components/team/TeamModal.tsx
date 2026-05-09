@@ -6,7 +6,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
 
 import { type TeamMember } from "@/lib/team";
-import { MemberSocials, getInitials } from "./MemberSocials";
+import { MemberAvatar } from "./MemberAvatar";
+import { MemberSocials } from "./MemberSocials";
 
 interface Props {
   member: TeamMember | null;
@@ -106,12 +107,7 @@ export function TeamModal({ member, onClose }: Props) {
             </button>
 
             <div className="px-8 pt-12 pb-8 sm:px-10 sm:pt-14 sm:pb-10 text-center">
-              <div
-                className="mx-auto inline-flex h-28 w-28 items-center justify-center rounded-full bg-primary text-primary-foreground text-3xl font-serif font-medium tracking-wide ring-4 ring-primary/15"
-                aria-hidden="true"
-              >
-                {getInitials(member.name)}
-              </div>
+              <MemberAvatar member={member} size="modal" />
               <h2
                 id="team-modal-title"
                 className="mt-6 font-serif text-2xl sm:text-3xl font-medium tracking-tight"

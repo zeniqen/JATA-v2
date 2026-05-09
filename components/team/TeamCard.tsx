@@ -4,7 +4,8 @@ import * as React from "react";
 import { ArrowRight } from "lucide-react";
 
 import { type TeamMember } from "@/lib/team";
-import { MemberSocials, getInitials } from "./MemberSocials";
+import { MemberAvatar } from "./MemberAvatar";
+import { MemberSocials } from "./MemberSocials";
 
 interface Props {
   member: TeamMember;
@@ -20,12 +21,7 @@ export function TeamCard({ member, onMore }: Props) {
 
   return (
     <div className="group relative h-full flex flex-col rounded-2xl border border-border/70 bg-card p-7 text-center transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md">
-      <div
-        className="mx-auto inline-flex h-24 w-24 items-center justify-center rounded-full bg-primary text-primary-foreground text-2xl font-serif font-medium tracking-wide ring-4 ring-primary/10 transition-all duration-300 group-hover:ring-primary/20"
-        aria-hidden="true"
-      >
-        {getInitials(member.name)}
-      </div>
+      <MemberAvatar member={member} size="card" />
       <h3 className="mt-5 font-serif text-lg font-medium tracking-tight">
         {member.name}
       </h3>
