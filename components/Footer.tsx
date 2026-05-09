@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Mail } from "lucide-react";
 
-import { Instagram, Linktree } from "@/components/icons/Instagram";
+import { Instagram, Linktree, LinkedIn } from "@/components/icons/Instagram";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -22,6 +22,12 @@ const SOCIALS = [
     label: "Email",
     icon: Mail,
     external: false,
+  },
+  {
+    href: "https://linkedin.com/company/just-a-text-away",
+    label: "LinkedIn",
+    icon: LinkedIn,
+    external: true,
   },
   {
     href: "https://linktr.ee/justatextaway",

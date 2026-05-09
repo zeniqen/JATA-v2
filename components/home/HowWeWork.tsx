@@ -13,7 +13,7 @@ const STEPS: {
   {
     step: "01",
     title: "Reach Out",
-    description: "Drop a message via the forum, email, or our Linktree. No forms, no fuss.",
+    description: "Send us a message via email or Instagram DM. No forms, no fuss.",
     icon: MessageCircle,
   },
   {

@@ -121,7 +121,7 @@ export function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: reduce ? 0 : 0.2 }}
-              className="md:hidden fixed inset-0 top-16 z-40 bg-foreground/30 backdrop-blur-sm"
+              className="md:hidden fixed inset-0 top-16 z-40 bg-foreground/40 backdrop-blur-sm"
               onClick={() => setOpen(false)}
               aria-hidden="true"
             />
@@ -134,7 +134,7 @@ export function Navbar() {
                 duration: reduce ? 0 : 0.32,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="md:hidden fixed top-16 right-0 bottom-0 z-50 w-[78%] max-w-sm bg-background border-l border-border/70 shadow-xl"
+              className="md:hidden fixed top-16 right-0 bottom-0 z-50 w-[78%] max-w-sm bg-card border-l-2 border-primary/20 shadow-2xl shadow-primary/15"
               role="dialog"
               aria-modal="true"
               aria-label="Mobile navigation"

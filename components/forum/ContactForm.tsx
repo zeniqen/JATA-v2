@@ -18,69 +18,89 @@ const CATEGORIES = [
 
 type Category = (typeof CATEGORIES)[number];
 
-const RECIPIENT = "justatextaway.org@gmail.com";
-
-function buildMailto(values: {
-  name: string;
-  age: string;
-  email: string;
-  category: Category;
-  message: string;
-}) {
-  const subject = `[JATA · ${values.category}] ${
-    values.name ? `from ${values.name}` : "Anonymous message"
-  }`;
-
-  const lines = [
-    `Category: ${values.category}`,
-    values.name ? `Name: ${values.name}` : "Name: (anonymous)",
-    values.age ? `Age: ${values.age}` : null,
-    values.email ? `Email: ${values.email}` : null,
-    "",
-    "Message:",
-    values.message,
-  ].filter(Boolean) as string[];
-
-  const body = lines.join("\n");
-  const params = new URLSearchParams({ subject, body });
-  return `mailto:${RECIPIENT}?${params.toString().replace(/\+/g, "%20")}`;
-}
-
 export function ContactForm() {
   const [name, setName] = React.useState("");
   const [age, setAge] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [category, setCategory] = React.useState<Category>("Peer Support");
   const [message, setMessage] = React.useState("");
+  const [honeypot, setHoneypot] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function reset() {
+    setName("");
+    setAge("");
+    setEmail("");
+    setCategory("Peer Support");
+    setMessage("");
+    setHoneypot("");
+  }
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!message.trim()) {
       toast.error("Please add a message before sending.");
       return;
     }
+    if (submitting) return;
+
     setSubmitting(true);
-    const href = buildMailto({ name, age, email, category, message });
-    if (typeof window !== "undefined") {
-      window.location.href = href;
-    }
-    toast.success("Thanks for reaching out.", {
-      description:
-        "Your email app should open in a moment. We read every single one.",
-    });
-    setTimeout(() => {
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          age,
+          email,
+          category,
+          message,
+          honeypot,
+        }),
+      });
+
+      if (!res.ok) {
+        const data = (await res.json().catch(() => ({}))) as {
+          error?: string;
+        };
+        toast.error(
+          data.error ??
+            "Something went wrong sending your message. Please try again."
+        );
+        return;
+      }
+
+      toast.success("Thanks for reaching out.", {
+        description: "Your message has been delivered. We read every single one.",
+      });
+      reset();
+    } catch {
+      toast.error(
+        "We couldn't reach the server. Check your connection and try again."
+      );
+    } finally {
       setSubmitting(false);
-      setName("");
-      setAge("");
-      setEmail("");
-      setCategory("Peer Support");
-      setMessage("");
-    }, 600);
+    }
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+      <div
+        aria-hidden="true"
+        className="absolute -left-[9999px] -top-[9999px] h-0 w-0 overflow-hidden"
+      >
+        <label htmlFor="company">Leave this field empty</label>
+        <input
+          type="text"
+          id="company"
+          name="company"
+          tabIndex={-1}
+          autoComplete="off"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+        />
+      </div>
+
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="name">
@@ -96,6 +116,8 @@ export function ContactForm() {
             onChange={(e) => setName(e.target.value)}
             placeholder="Anonymous"
             autoComplete="name"
+            maxLength={80}
+            disabled={submitting}
           />
         </div>
         <div className="space-y-2">
@@ -115,6 +137,7 @@ export function ContactForm() {
             value={age}
             onChange={(e) => setAge(e.target.value)}
             placeholder="—"
+            disabled={submitting}
           />
         </div>
       </div>
@@ -134,6 +157,8 @@ export function ContactForm() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
           autoComplete="email"
+          maxLength={120}
+          disabled={submitting}
         />
       </div>
 
@@ -144,7 +169,8 @@ export function ContactForm() {
           name="category"
           value={category}
           onChange={(e) => setCategory(e.target.value as Category)}
-          className="flex h-10 w-full rounded-md border border-input bg-card/60 px-3 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:border-primary/40 appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%236b5a55%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22/%3E%3C/svg%3E')] bg-no-repeat bg-[right_0.75rem_center] pr-10"
+          disabled={submitting}
+          className="flex h-10 w-full rounded-md border border-input bg-card/60 px-3 py-2 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background focus-visible:border-primary/40 disabled:cursor-not-allowed disabled:opacity-50 appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%236b5a55%22%20stroke-width%3D%222.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m6%209%206%206%206-6%22/%3E%3C/svg%3E')] bg-no-repeat bg-[right_0.75rem_center] pr-10"
         >
           {CATEGORIES.map((c) => (
             <option key={c} value={c}>
@@ -166,17 +192,16 @@ export function ContactForm() {
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Take your time. Say as much or as little as you want."
           rows={6}
+          maxLength={5000}
+          disabled={submitting}
         />
       </div>
 
-      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 pt-2">
+      <div className="pt-2">
         <Button type="submit" size="lg" disabled={submitting} className="group">
-          {submitting ? "Opening your email…" : "Send message"}
+          {submitting ? "Sending…" : "Send message"}
           <Send className="transition-transform duration-200 group-hover:translate-x-0.5" />
         </Button>
-        <p className="text-xs text-muted-foreground">
-          This will open your email app pre-filled. You stay in control.
-        </p>
       </div>
     </form>
   );
