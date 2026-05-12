@@ -46,7 +46,7 @@ export function Stagger({
   children,
   stagger = 0.1,
   once = true,
-  amount = 0.2,
+  amount = 0,
   ...rest
 }: StaggerProps) {
   const reduce = useReducedMotion();
