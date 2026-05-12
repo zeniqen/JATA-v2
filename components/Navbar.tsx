@@ -121,7 +121,7 @@ export function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: reduce ? 0 : 0.2 }}
-              className="md:hidden fixed inset-0 top-16 z-40 bg-foreground/40 backdrop-blur-sm"
+              className="md:hidden fixed inset-0 top-16 z-40 bg-foreground/55 backdrop-blur-md"
               onClick={() => setOpen(false)}
               aria-hidden="true"
             />
@@ -134,44 +134,48 @@ export function Navbar() {
                 duration: reduce ? 0 : 0.32,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="md:hidden fixed top-16 right-0 bottom-0 z-50 w-[78%] max-w-sm bg-card border-l-2 border-primary/20 shadow-2xl shadow-primary/15"
+              className="md:hidden fixed top-16 right-0 bottom-0 z-50 w-[78%] max-w-sm bg-card border-l-2 border-primary/25 shadow-2xl shadow-foreground/25"
               role="dialog"
               aria-modal="true"
               aria-label="Mobile navigation"
             >
-              <ul className="flex flex-col p-4 gap-1">
-                {NAV_LINKS.map((link, i) => {
-                  const active = isActive(pathname, link.href);
-                  return (
-                    <motion.li
-                      key={link.href}
-                      initial={reduce ? false : { opacity: 0, x: 10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{
-                        duration: 0.25,
-                        delay: reduce ? 0 : 0.08 + i * 0.05,
-                      }}
-                    >
-                      <Link
-                        href={link.href}
-                        className={cn(
-                          "block rounded-md px-4 py-3 text-base font-medium transition-colors",
-                          active
-                            ? "bg-primary/10 text-primary"
-                            : "text-foreground hover:bg-secondary"
-                        )}
-                        aria-current={active ? "page" : undefined}
+              <div className="p-4">
+                <ul className="flex flex-col gap-1 rounded-xl border border-border/60 bg-secondary/50 p-2 shadow-sm">
+                  {NAV_LINKS.map((link, i) => {
+                    const active = isActive(pathname, link.href);
+                    return (
+                      <motion.li
+                        key={link.href}
+                        initial={reduce ? false : { opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{
+                          duration: 0.25,
+                          delay: reduce ? 0 : 0.08 + i * 0.05,
+                        }}
                       >
-                        {link.label}
-                      </Link>
-                    </motion.li>
-                  );
-                })}
-              </ul>
-              <div className="px-4 mt-4">
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  Compassion on standby — always just a text away.
-                </p>
+                        <Link
+                          href={link.href}
+                          className={cn(
+                            "block rounded-md px-4 py-3 text-base font-medium transition-colors",
+                            active
+                              ? "bg-primary/10 text-primary"
+                              : "text-foreground hover:bg-secondary"
+                          )}
+                          aria-current={active ? "page" : undefined}
+                        >
+                          {link.label}
+                        </Link>
+                      </motion.li>
+                    );
+                  })}
+                </ul>
+              </div>
+              <div className="px-4 mt-2">
+                <div className="rounded-xl border border-border/60 bg-secondary/50 px-4 py-3 shadow-sm">
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Compassion on standby — always just a text away.
+                  </p>
+                </div>
               </div>
             </motion.div>
           </>

@@ -52,11 +52,11 @@ export const TEAM: TeamMember[] = [
   {
     name: "Aryansh Agarwal",
     role: "Head of IT Department",
-    bio: "Trains the team on listening, boundaries, and sensitive situations.",
+    bio: "An 18-year-old React-based developer passionate about building modern web experiences and meaningful tech projects.",
     fullBio:
-      "Trains the team on listening, boundaries, and sensitive situations. Mira leads our quarterly trainings and writes the protocols we follow when something heavier comes through. Her background in trauma-informed peer support — picked up at a youth helpline — shapes how we hold space for difficult conversations.",
-    instagram: "https://instagram.com/mira.dsouza",
-    linkedin: "https://linkedin.com/in/mira-dsouza",
+      "An 18-year-old React-based developer passionate about building modern web experiences and meaningful tech projects. An incoming BTech CSE (AI) student at Newton School of Technology (Batch of 2030), he focuses on creating practical solutions with clean design and functionality in mind. He is a 1× hackathon winner at the national-level Code Nakshatra 2.0 hosted by TIIPS College and actively contributes to youth-led tech initiatives.",
+    instagram: "https://instagram.com/ar_yapp",
+    linkedin: "https://linkedin.com/in/aryanshagarwal",
     image: "/team/aryansh.jpg",
   },
   {
