@@ -134,13 +134,14 @@ export function Navbar() {
                 duration: reduce ? 0 : 0.32,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="md:hidden fixed top-16 right-0 bottom-0 z-50 w-[78%] max-w-sm bg-card border-l-2 border-primary/25 shadow-2xl shadow-foreground/25"
+              style={{ backgroundColor: "var(--color-secondary)" }}
+              className="md:hidden fixed top-16 right-0 bottom-0 z-50 w-[78%] max-w-sm bg-secondary border-l-2 border-primary/30 shadow-2xl shadow-foreground/30"
               role="dialog"
               aria-modal="true"
               aria-label="Mobile navigation"
             >
               <div className="p-4">
-                <ul className="flex flex-col gap-1 rounded-xl border border-border/60 bg-secondary/50 p-2 shadow-sm">
+                <ul className="flex flex-col gap-1 rounded-xl border border-border/70 bg-card p-2 shadow-sm">
                   {NAV_LINKS.map((link, i) => {
                     const active = isActive(pathname, link.href);
                     return (
@@ -171,7 +172,7 @@ export function Navbar() {
                 </ul>
               </div>
               <div className="px-4 mt-2">
-                <div className="rounded-xl border border-border/60 bg-secondary/50 px-4 py-3 shadow-sm">
+                <div className="rounded-xl border border-border/70 bg-card px-4 py-3 shadow-sm">
                   <p className="text-xs text-muted-foreground leading-relaxed">
                     Compassion on standby — always just a text away.
                   </p>
